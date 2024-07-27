@@ -12,9 +12,9 @@ From these points a [*Delaunay* triangulation](https://en.wikipedia.org/wiki/Del
 
 There are several ways to display the modified image:
 1. Just display the seed points. They can take the color of the original image points at their location,
-   and their size can be selected according to the darkness of the image at the seed points - the darker to image the darker to point
+   and their size can be varied with the darkness of the image at the seed points - the darker the image the larger the point
 2. Draw the network of Delaunay triangles. The triangles can be filled with a triangular gradient where the start colors are those at the triangle corners in the original image.
-3. Draw the Voronoi polygons. They can be filled uniformly with the original image's color at the center point of the polygon (Delaunay triangle corner).
+3. Draw the Voronoi polygons. They can be filled uniformly with the original image's color at the center point of the polygon which is a vertex of Delaunay triangle.
    The border of the polygon can be drawn in an arbitrary color.
 4. Or any combination.
 
