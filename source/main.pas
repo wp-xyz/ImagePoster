@@ -1,7 +1,7 @@
 unit Main;
 
 {$mode objfpc}{$H+}
-
+{$WARN 4080 off : Converting the operands to "$1" before doing the subtract could prevent overflow errors.}
 interface
 
 uses
@@ -108,13 +108,13 @@ end;
 
 procedure TMainForm.btnApplyLloydsAlgorithmClick(Sender: TObject);
 begin
-  Screen.BeginWaitCursor;
+  Screen.Cursor := crHourGlass;
   try
     FLloydsAlgorithmNeeded := true;
     InitSeedPoints;
     UpdateImage;
   finally
-    Screen.EndWaitCursor;
+    Screen.Cursor := crDefault;
   end;
 end;
 
@@ -137,13 +137,13 @@ end;
 
 procedure TMainForm.Button1Click(Sender: TObject);
 begin
-  Screen.BeginWaitCursor;
+  Screen.Cursor := crHourglass;
   try
     FSeedPoints := nil;
     InitSeedPoints;
     UpdateImage;
   finally
-    Screen.EndWaitCursor;
+    Screen.Cursor := crDefault;
   end;
 end;
 
@@ -158,11 +158,11 @@ end;
 
 procedure TMainForm.UpdateImageHandler(Sender: TObject);
 begin
-  Screen.BeginWaitCursor;
+  Screen.Cursor := crHourglass;
   try
     UpdateImage;
   finally
-    Screen.EndWaitCursor;
+    Screen.Cursor := crDefault;
   end;
 end;
 
@@ -276,7 +276,7 @@ type
     i, j, k: Integer;
   end;
 var
-  i, j, j0, j1, j2, k: Integer;
+  i, j, j0, j1, j2: Integer;
   x, y: Integer;
   P: TPoint;
   Pts: array of TPoint = nil;
@@ -293,7 +293,7 @@ begin
     exit;
   end;
 
-  Screen.BeginWaitCursor;
+  Screen.Cursor := crHourGlass;
   try
     Application.ProcessMessages;
 
@@ -428,7 +428,7 @@ begin
     ImageBox.Invalidate;
 
   finally
-    Screen.EndWaitCursor;
+    Screen.Cursor := crDefault;
   end;
 end;
 
