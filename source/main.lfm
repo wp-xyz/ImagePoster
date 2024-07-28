@@ -6,10 +6,10 @@ object MainForm: TMainForm
   Caption = 'Image Posterizer'
   ClientHeight = 586
   ClientWidth = 846
+  LCLVersion = '3.99.0.0'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '2.0.8.0'
   object Panel1: TPanel
     Left = 0
     Height = 40
@@ -46,8 +46,8 @@ object MainForm: TMainForm
       BorderSpacing.Left = 12
       BorderSpacing.Right = 6
       ItemHeight = 15
-      OnCloseUp = cbFileNameCloseUp
       TabOrder = 0
+      OnCloseUp = cbFileNameCloseUp
     end
     object btnBrowse: TBitBtn
       AnchorSideTop.Control = Panel1
@@ -61,8 +61,8 @@ object MainForm: TMainForm
       AutoSize = True
       BorderSpacing.Right = 2
       Caption = '...'
-      OnClick = btnBrowseClick
       TabOrder = 1
+      OnClick = btnBrowseClick
     end
     object btnLoad: TBitBtn
       AnchorSideTop.Control = Panel1
@@ -78,23 +78,24 @@ object MainForm: TMainForm
       BorderSpacing.Left = 4
       BorderSpacing.Right = 12
       Caption = 'Load'
-      OnClick = btnLoadClick
       TabOrder = 2
+      OnClick = btnLoadClick
     end
   end
   object Panel2: TPanel
     Left = 6
     Height = 534
     Top = 46
-    Width = 234
+    Width = 266
     Align = alLeft
+    AutoSize = True
     BorderSpacing.Left = 6
     BorderSpacing.Top = 6
     BorderSpacing.Bottom = 6
     BevelInner = bvRaised
     BevelOuter = bvLowered
     ClientHeight = 534
-    ClientWidth = 234
+    ClientWidth = 266
     TabOrder = 1
     object gbOrigImage: TGroupBox
       AnchorSideLeft.Control = Panel2
@@ -104,13 +105,13 @@ object MainForm: TMainForm
       Left = 10
       Height = 47
       Top = 10
-      Width = 214
+      Width = 246
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Around = 8
       Caption = 'Original image'
       ClientHeight = 27
-      ClientWidth = 210
+      ClientWidth = 242
       TabOrder = 0
       object cbShowOrigImage: TCheckBox
         AnchorSideLeft.Control = gbOrigImage
@@ -118,15 +119,15 @@ object MainForm: TMainForm
         Left = 12
         Height = 19
         Top = 0
-        Width = 128
+        Width = 126
         BorderSpacing.Left = 12
         BorderSpacing.Right = 8
         BorderSpacing.Bottom = 8
         Caption = 'Show original image'
         Checked = True
-        OnChange = UpdateImageHandler
         State = cbChecked
         TabOrder = 0
+        OnChange = UpdateImageHandler
       end
     end
     object gbSeedPoints: TGroupBox
@@ -138,14 +139,14 @@ object MainForm: TMainForm
       Left = 10
       Height = 172
       Top = 73
-      Width = 214
+      Width = 246
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Top = 8
       BorderSpacing.Around = 8
       Caption = 'Seed points'
       ClientHeight = 152
-      ClientWidth = 210
+      ClientWidth = 242
       TabOrder = 1
       object cbDrawSeedPoints: TCheckBox
         AnchorSideLeft.Control = gbSeedPoints
@@ -154,14 +155,14 @@ object MainForm: TMainForm
         Left = 12
         Height = 19
         Top = 37
-        Width = 110
+        Width = 108
         BorderSpacing.Left = 12
         BorderSpacing.Right = 8
         Caption = 'Draw seed points'
         Checked = True
-        OnChange = UpdateImageHandler
         State = cbChecked
         TabOrder = 0
+        OnChange = UpdateImageHandler
       end
       object rbConstantSeedPointSize: TRadioButton
         AnchorSideLeft.Control = cbDrawSeedPoints
@@ -170,13 +171,13 @@ object MainForm: TMainForm
         Left = 28
         Height = 19
         Top = 75
-        Width = 90
+        Width = 88
         BorderSpacing.Left = 16
         Caption = 'Constant size'
         Checked = True
-        OnChange = UpdateImageHandler
         TabOrder = 2
         TabStop = True
+        OnChange = UpdateImageHandler
       end
       object rbVaryingSeedPointSize: TRadioButton
         AnchorSideLeft.Control = cbDrawSeedPoints
@@ -185,12 +186,12 @@ object MainForm: TMainForm
         Left = 28
         Height = 19
         Top = 94
-        Width = 159
+        Width = 157
         BorderSpacing.Left = 16
         BorderSpacing.Bottom = 8
         Caption = 'Brightness-dependent size'
-        OnChange = UpdateImageHandler
         TabOrder = 1
+        OnChange = UpdateImageHandler
       end
       object seMaxSeedPtSize: TSpinEdit
         AnchorSideLeft.Control = rbVaryingSeedPointSize
@@ -198,7 +199,7 @@ object MainForm: TMainForm
         AnchorSideTop.Side = asrBottom
         AnchorSideRight.Control = gbSeedPoints
         AnchorSideRight.Side = asrBottom
-        Left = 145
+        Left = 177
         Height = 23
         Top = 121
         Width = 57
@@ -208,9 +209,9 @@ object MainForm: TMainForm
         BorderSpacing.Right = 8
         BorderSpacing.Bottom = 8
         MinValue = 1
-        OnChange = UpdateImageHandler
         TabOrder = 3
         Value = 8
+        OnChange = UpdateImageHandler
       end
       object cbColorFromImage: TCheckBox
         AnchorSideLeft.Control = cbDrawSeedPoints
@@ -219,11 +220,11 @@ object MainForm: TMainForm
         Left = 28
         Height = 19
         Top = 56
-        Width = 114
+        Width = 112
         BorderSpacing.Left = 16
         Caption = 'Color from image'
-        OnChange = UpdateImageHandler
         TabOrder = 4
+        OnChange = UpdateImageHandler
       end
       object lblNumSeedPoints: TLabel
         AnchorSideLeft.Control = gbSeedPoints
@@ -242,27 +243,26 @@ object MainForm: TMainForm
         AnchorSideLeft.Control = lblNumSeedPoints
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = gbSeedPoints
-        AnchorSideRight.Control = Button1
+        AnchorSideRight.Control = btnNewSeedPoints
         Left = 51
         Height = 23
         Top = 6
-        Width = 93
+        Width = 125
         Alignment = taRightJustify
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 6
         BorderSpacing.Right = 6
         BorderSpacing.Bottom = 8
-        MaxValue = 0
-        OnChange = seNumSeedPointsChange
         TabOrder = 5
         Value = 5000
+        OnChange = seNumSeedPointsChange
       end
-      object Button1: TButton
+      object btnNewSeedPoints: TButton
         AnchorSideTop.Control = seNumSeedPoints
         AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = gbSeedPoints
         AnchorSideRight.Side = asrBottom
-        Left = 152
+        Left = 184
         Height = 25
         Top = 5
         Width = 50
@@ -271,8 +271,8 @@ object MainForm: TMainForm
         BorderSpacing.Left = 8
         BorderSpacing.Right = 8
         Caption = 'New'
-        OnClick = Button1Click
         TabOrder = 6
+        OnClick = btnNewSeedPointsClick
       end
     end
     object gbDelaunayTriangles: TGroupBox
@@ -284,14 +284,14 @@ object MainForm: TMainForm
       Left = 10
       Height = 66
       Top = 261
-      Width = 214
+      Width = 246
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Top = 8
       BorderSpacing.Around = 8
       Caption = 'Delaunay triangles'
       ClientHeight = 46
-      ClientWidth = 210
+      ClientWidth = 242
       TabOrder = 2
       object cbDrawDelaunayBorder: TCheckBox
         AnchorSideLeft.Control = gbDelaunayTriangles
@@ -299,11 +299,11 @@ object MainForm: TMainForm
         Left = 12
         Height = 19
         Top = 0
-        Width = 180
+        Width = 178
         BorderSpacing.Left = 12
         Caption = 'Draw Delaunay triangle border'
-        OnChange = UpdateImageHandler
         TabOrder = 0
+        OnChange = UpdateImageHandler
       end
       object cbDelaunayGradient: TCheckBox
         AnchorSideLeft.Control = gbDelaunayTriangles
@@ -312,12 +312,29 @@ object MainForm: TMainForm
         Left = 12
         Height = 19
         Top = 19
-        Width = 162
+        Width = 160
         BorderSpacing.Left = 12
         BorderSpacing.Bottom = 8
         Caption = 'Fill with triangular gradient'
-        OnChange = UpdateImageHandler
         TabOrder = 1
+        OnChange = UpdateImageHandler
+      end
+      object clbDelaunayBorderColor: TColorButton
+        AnchorSideLeft.Control = cbDrawDelaunayBorder
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = cbDrawDelaunayBorder
+        AnchorSideTop.Side = asrCenter
+        AnchorSideRight.Side = asrBottom
+        Left = 198
+        Height = 25
+        Top = -3
+        Width = 36
+        BorderSpacing.Left = 8
+        BorderSpacing.Right = 8
+        BorderWidth = 2
+        ButtonColorSize = 16
+        ButtonColor = clBlack
+        OnColorChanged = UpdateImageHandler
       end
     end
     object gbVoronoiPolygons: TGroupBox
@@ -329,14 +346,14 @@ object MainForm: TMainForm
       Left = 10
       Height = 66
       Top = 343
-      Width = 214
+      Width = 246
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Top = 8
       BorderSpacing.Around = 8
       Caption = 'Voronoi polygons'
       ClientHeight = 46
-      ClientWidth = 210
+      ClientWidth = 242
       TabOrder = 3
       object cbFillWithColorOfSeedPoints: TCheckBox
         AnchorSideLeft.Control = gbVoronoiPolygons
@@ -345,12 +362,12 @@ object MainForm: TMainForm
         Left = 12
         Height = 19
         Top = 19
-        Width = 141
+        Width = 139
         BorderSpacing.Left = 12
         BorderSpacing.Bottom = 8
         Caption = 'Fill with color of center'
-        OnChange = UpdateImageHandler
         TabOrder = 0
+        OnChange = UpdateImageHandler
       end
       object cbDrawVoronoiBorder: TCheckBox
         AnchorSideLeft.Control = gbVoronoiPolygons
@@ -358,22 +375,25 @@ object MainForm: TMainForm
         Left = 12
         Height = 19
         Top = 0
-        Width = 135
+        Width = 133
         BorderSpacing.Left = 12
         Caption = 'Draw Voronoi borders'
-        OnChange = UpdateImageHandler
         TabOrder = 1
+        OnChange = UpdateImageHandler
       end
       object clbVoronoiBorderColor: TColorButton
-        AnchorSideLeft.Control = cbDrawVoronoiBorder
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = cbDrawVoronoiBorder
         AnchorSideTop.Side = asrCenter
-        Left = 159
+        AnchorSideRight.Control = gbVoronoiPolygons
+        AnchorSideRight.Side = asrBottom
+        Left = 198
         Height = 25
         Top = -3
         Width = 36
+        Anchors = [akTop, akRight]
         BorderSpacing.Left = 12
+        BorderSpacing.Right = 8
         BorderWidth = 2
         ButtonColorSize = 16
         ButtonColor = clBlack
@@ -389,42 +409,42 @@ object MainForm: TMainForm
       Left = 10
       Height = 53
       Top = 425
-      Width = 214
+      Width = 246
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BorderSpacing.Top = 8
       BorderSpacing.Around = 8
       Caption = 'Lloyd''s algorithm'
       ClientHeight = 33
-      ClientWidth = 210
+      ClientWidth = 242
       TabOrder = 4
       object btnApplyLloydsAlgorithm: TButton
         AnchorSideLeft.Control = gbLloydsAlgorithm
         AnchorSideLeft.Side = asrCenter
         AnchorSideTop.Control = gbLloydsAlgorithm
-        Left = 68
+        Left = 84
         Height = 25
         Top = 0
         Width = 75
         BorderSpacing.Bottom = 8
         Caption = 'Apply'
-        OnClick = btnApplyLloydsAlgorithmClick
         TabOrder = 0
+        OnClick = btnApplyLloydsAlgorithmClick
       end
     end
   end
   object ImageBox: TPaintBox
-    Left = 246
+    Left = 278
     Height = 534
     Top = 46
-    Width = 594
+    Width = 562
     Align = alClient
     BorderSpacing.Around = 6
     OnPaint = ImageBoxPaint
   end
   object OpenPictureDialog: TOpenPictureDialog
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
-    left = 584
-    top = 61
+    Left = 584
+    Top = 61
   end
 end

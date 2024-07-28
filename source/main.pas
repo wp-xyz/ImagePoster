@@ -18,7 +18,7 @@ type
     btnBrowse: TBitBtn;
     btnLoad: TBitBtn;
     btnApplyLloydsAlgorithm: TButton;
-    Button1: TButton;
+    btnNewSeedPoints: TButton;
     cbFileName: TComboBox;
     cbDrawSeedPoints: TCheckBox;
     cbDrawDelaunayBorder: TCheckBox;
@@ -28,6 +28,7 @@ type
     cbDelaunayGradient: TCheckBox;
     cbColorFromImage: TCheckBox;
     clbVoronoiBorderColor: TColorButton;
+    clbDelaunayBorderColor: TColorButton;
     gbOrigImage: TGroupBox;
     gbSeedPoints: TGroupBox;
     gbDelaunayTriangles: TGroupBox;
@@ -46,9 +47,8 @@ type
     procedure btnApplyLloydsAlgorithmClick(Sender: TObject);
     procedure btnBrowseClick(Sender: TObject);
     procedure btnLoadClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnNewSeedPointsClick(Sender: TObject);
     procedure cbFileNameCloseUp(Sender: TObject);
-    procedure UpdateImageHandler(Sender: TObject);
     procedure cbUseLloydsAlgorithmChange(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
@@ -56,6 +56,7 @@ type
     procedure ImageBoxPaint(Sender: TObject);
     procedure seLloydsIterationsChange(Sender: TObject);
     procedure seNumSeedPointsChange(Sender: TObject);
+    procedure UpdateImageHandler(Sender: TObject);
   private
     FImg: TLazIntfImage;
     FPicture: TPicture;
@@ -135,7 +136,7 @@ begin
     LoadFile(cbFileName.Text);
 end;
 
-procedure TMainForm.Button1Click(Sender: TObject);
+procedure TMainForm.btnNewSeedPointsClick(Sender: TObject);
 begin
   Screen.Cursor := crHourglass;
   try
@@ -335,6 +336,7 @@ begin
         SetLength(Pts, 3);
         FDrawBitmap.Canvas.Brush.Style := bsClear;
         FDrawBitmap.Canvas.Pen.Style := psSolid;
+        FDrawBitmap.Canvas.Pen.Color := clbDelaunayBorderColor.ButtonColor;
         for i := 0 to High(FTriangulation.Triangles) do
         begin
           j0 := FTriangulation.Triangles[i].VertexIndex[0];
@@ -404,7 +406,7 @@ begin
         begin
           P := FSeedPoints[i].Round;
           P.X := EnsureRange(P.X, 0, FDrawBitmap.Width-1);
-          P.Y := EnsureRange(P.Y, 0, FDrawbitmap.Height-1);
+          P.Y := EnsureRange(P.Y, 0, FDrawBitmap.Height-1);
           c := FImg.Colors[P.X, P.Y];
           if cbColorFromImage.Checked then
             clr := FPColorToTColor(c);
@@ -498,8 +500,9 @@ begin
       w[j] := 1.0 - ColorToGray(c)/255;
       wsum := wsum + w[j];
     end;
-    for j := 0 to n-1 do
-      w[j] := w[j] / wsum;
+    if wsum <> 0.0 then
+      for j := 0 to n-1 do
+        w[j] := w[j] / wsum;
     pts[i].X := 0;
     pts[i].Y := 0;
     for j := 0 to n-1 do
@@ -559,6 +562,11 @@ begin
         s := ini.ReadString('History', List[i], '');
         if FileExists(s) then
           cbFilename.Items.Add(s);
+      end;
+      if cbFileName.Items.Count > 0 then
+      begin
+        cbFileName.Text := cbFileName.Items[0];
+        LoadFile(cbFileName.Text);
       end;
     finally
       List.Free;
