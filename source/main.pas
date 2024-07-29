@@ -442,7 +442,7 @@ begin
     exit;
   end;
 
-  Screen.Cursor := crHourglass; //BeginWaitCursor;
+  Screen.Cursor := crHourglass;
   try
     FPicture.Free;
     FPicture := TPicture.Create;
@@ -462,11 +462,13 @@ begin
     UpdateImage;
     UpdateFileHistory(AFileName);
   finally
-    Screen.Cursor := crDefault; //EndWaitCursor;
+    Screen.Cursor := crDefault;
   end;
 end;
 
 procedure TMainForm.LloydsAlgorithm;
+const
+  FACTOR = 0.95;   // < 1 to avoid creating duplicate points
 var
   i, j, n: Integer;
   c: TColor;
@@ -479,30 +481,25 @@ begin
     exit;
 
   SetLength(pts, Length(FSeedPoints));
-  for i := 4 to High(FSeedPoints) do   // i=4:  Skip the four corner points
+  for i := 4 to High(FSeedPoints) do   // i=4:  Skip the four corner points, they do not change
   begin
-    // <<<
-//    WriteLn('i=', i, ': Vertex=', FTriangulation.Vertex[i].X:0:3, ',', FTriangulation.Vertex[i].Y:0:3, ' (', FSeedpoints[i].X:0:3,',', FSeedPoints[i].Y:0:3);
-    // >>>
-
     n := Length(FTriangulation.VoronoiPolygon[i]);
     SetLength(w, n);
     wsum := 0.0;
     for j := 0 to n-1 do
     begin
-      // <<<
-//      WriteLn('  j=', j,': ', FTriangulation.VoronoiPolygon[i][j].X:0:3, ',', FTriangulation.VoronoiPolygon[i][j].Y:0:3);
-      // >>>
       P := FTriangulation.VoronoiPolygon[i][j].Round;
       P.X := EnsureRange(P.X, 0, FImg.Width-1);
       P.Y := EnsureRange(P.Y, 0, FImg.Height-1);
       c := FPColorToTColor(FImg.Colors[P.X, P.Y]);
-      w[j] := 1.0 - ColorToGray(c)/255;
+      w[j] := 1.0 - ColorToGray(c)/255 * FACTOR;
       wsum := wsum + w[j];
     end;
-    if wsum <> 0.0 then
+    if wsum <> 0 then
       for j := 0 to n-1 do
-        w[j] := w[j] / wsum;
+        w[j] := w[j] / wsum
+    else
+      w[j] := 1;
     pts[i].X := 0;
     pts[i].Y := 0;
     for j := 0 to n-1 do

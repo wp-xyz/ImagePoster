@@ -293,6 +293,7 @@ begin
   if not PreparePoints(minx, miny, maxx, maxy) then
   begin
     Result := false;
+    //raise Exception.Create(FErrorMsg);
     exit;
   end;
   nVert := FInternalVertexList.Count;
