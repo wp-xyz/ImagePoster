@@ -264,7 +264,7 @@ procedure TMainForm.UpdateImage;
   procedure DrawBackground(ACanvas: TCanvas; AWidth, AHeight: Integer);
   begin
     ACanvas.Brush.Style := bsSolid;
-    ACanvas.Brush.Color := clWindow;
+    ACanvas.Brush.Color := ColorToRGB(clForm);
     ACanvas.FillRect(0, 0, AWidth, AHeight);
   end;
 
@@ -299,8 +299,11 @@ begin
     Application.ProcessMessages;
 
     if cbShowOrigImage.Checked then
-      FDrawBitmap.Assign(FPicture.Bitmap)
-    else
+    begin
+      FDrawBitmap.Canvas.Brush.Color := ColorToRGB(clForm);
+      FDrawBitmap.Canvas.FillRect(0, 0, FDrawBitmap.Width, FDrawBitmap.Height);
+      FDrawBitmap.Canvas.Draw(0, 0, FPicture.Bitmap);
+    end else
       DrawBackground(FDrawBitmap.Canvas, FDrawBitmap.Width, FDrawBitmap.Height);
 
     if FTriangulation <> nil then
@@ -450,7 +453,10 @@ begin
 
     FDrawBitmap.Free;
     FDrawBitmap := TBitmap.Create;
-    FDrawBitmap.Assign(FPicture.Bitmap);
+    FDrawBitmap.SetSize(FPicture.Width, FPicture.Height);
+    FDrawBitmap.Canvas.Brush.Color := clForm;
+    FDrawBitmap.Canvas.FillRect(0, 0, FDrawBitmap.Width, FDrawBitmap.Height);
+    FDrawBitmap.Canvas.Draw(0, 0, FPicture.Bitmap);
 
     FImg.Free;
     FImg := FDrawBitmap.CreateIntfImage;
