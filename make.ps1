@@ -74,7 +74,7 @@ Function Priv-LazBuild {
     }
 }
 
-Function PrivMain {
+Function Priv-Main {
     $ErrorActionPreference = 'stop'
     Set-PSDebug -Strict -Trace 1
     Invoke-ScriptAnalyzer -EnableExit -Path $PSCommandPath
