@@ -9,7 +9,7 @@ Options:
 "
 }
 
-Function Download-File {
+Function Request-File {
     ForEach ($REPLY in $args) {
         $params = @{
             Uri = $REPLY
@@ -51,7 +51,7 @@ Function Build-Project {
     Try {
         Get-Command $VAR.Cmd
     } Catch {
-        Download-File $VAR.Url | Install-Program
+        Request-File $VAR.Url | Install-Program
         $env:PATH+=";$($VAR.Path)"
         Get-Command $VAR.Cmd
     }
@@ -62,23 +62,23 @@ Function Build-Project {
             If ((-not (Start-Process -ea 'continue' -Wait -FilePath 'lazbuild' -ArgumentList '--verbose-pkgsearch', $PSItem)) -and
                 (-not (Start-Process -ea 'continue' -Wait -FilePath 'lazbuild' -ArgumentList '--add-package', $PSItem)) -and
                 (-not (Test-Path -Path 'use\components.txt'))) {
-                    $OutFile = Download-File "https://packages.lazarus-ide.org/$($_).zip"
+                    $OutFile = Request-File "https://packages.lazarus-ide.org/$($_).zip"
                     Expand-Archive -Path $OutFile -DestinationPath "use\$($_)" -Force
                     Remove-Item $OutFile
                 }
         }
         Get-ChildItem -Filter '*.lpk' -Recurse -File –Path 'use' | ForEach-Object {
-            &lazbuild --add-package-link $PSItem.Name | Out-Host
+            &lazbuild --add-package-link "$PSItem.Name" | Out-Host
         }
     }
     Get-ChildItem -Filter '*.lpi' -Recurse -File –Path 'src' | ForEach-Object {
-        &lazbuild --no-write-project --recursive --build-mode=release $_.Name | Out-Host
+        &lazbuild --no-write-project --recursive --build-mode=release "$_.Name" | Out-Host
     }
 }
 
-Function Process-Args {
+Function Switch-Args {
     $ErrorActionPreference = 'stop'
-    Set-PSDebug -Strict
+    Set-PSDebug -Strict -Trace -1
     Invoke-ScriptAnalyzer -EnableExit -Path $PSCommandPath
     If ($args.count -gt 0) {
         Switch ($args[0]) {
@@ -95,4 +95,4 @@ Function Process-Args {
 }
 
 ##############################################################################################################
-Process-Args @args
+Switch-Args @args
