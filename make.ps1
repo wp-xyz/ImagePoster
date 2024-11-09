@@ -22,13 +22,12 @@ Function Request-File {
 
 Function Install-Program {
     While ($Input.MoveNext()) {
-        $params = @{}
         Switch ((Split-Path -Path $Input.Current -Leaf).Split('.')[-1]) {
             'msi' {
                 & msiexec /passive /package $Input.Current | Out-Host
             }
             'exe' {
-                & $Input.Current /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART | Out-Host
+                & "$Input.Current" /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART | Out-Host
             }
         }
         Remove-Item $Input.Current
@@ -69,7 +68,7 @@ Function Build-Project {
     }
 }
 
-Function Switch-Args {
+Function Switch-Action {
     $ErrorActionPreference = 'stop'
     Set-PSDebug -Strict -Trace 1
     Invoke-ScriptAnalyzer -EnableExit -Path $PSCommandPath
@@ -88,4 +87,4 @@ Function Switch-Args {
 }
 
 ##############################################################################################################
-Switch-Args @args
+Switch-Action @args
