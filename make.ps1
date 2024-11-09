@@ -27,7 +27,7 @@ Function Install-Program {
                 & msiexec /passive /package $Input.Current | Out-Host
             }
             'exe' {
-                & "$($env:PWD)$($Input.Current)" /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART | Out-Host
+                Start-Process -PassThru -Wait -FilePath $Input.Current -ArgumentList '/SP-', '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART'
             }
         }
         Remove-Item $Input.Current
