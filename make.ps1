@@ -27,7 +27,7 @@ Function Install-Program {
                 & msiexec /passive /package $Input.Current | Out-Host
             }
             'exe' {
-                & "$Input.Current" /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART | Out-Host
+                & "$($Input.Current)" /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART | Out-Host
             }
         }
         Remove-Item $Input.Current
