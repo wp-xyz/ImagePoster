@@ -20,26 +20,28 @@ function priv_lazbuild
                 ;;
         esac
     fi
-    if [[ -f 'use/components.txt' ]]; then
+    if [[ -d 'use' ]]; then
         git submodule update --init --recursive
         git submodule update --recursive --remote
-        while read -r; do
-            if [[ -n "${REPLY}" ]] &&
-                ! (lazbuild --verbose-pkgsearch "${REPLY}") &&
-                ! (lazbuild --add-package "${REPLY}") &&
-                ! [[ -f "use/${REPLY}" ]]; then
-                    declare -A VAR=(
-                        [url]="https://packages.lazarus-ide.org/${REPLY}.zip"
-                        [out]=$(mktemp)
-                    )
-                    wget --output-document "${VAR[out]}" "${VAR[url]}" >/dev/null
-                    unzip -o "${VAR[out]}" -d "use/${REPLY}"
-                    rm --verbose "${VAR[out]}"
-                fi
-        done < 'use/components.txt'
+        if [[ -f 'use/components.txt' ]]; then
+            while read -r; do
+                if [[ -n "${REPLY}" ]] &&
+                    ! (lazbuild --verbose-pkgsearch "${REPLY}") &&
+                    ! (lazbuild --add-package "${REPLY}") &&
+                    ! [[ -e "use/${REPLY}" ]]; then
+                        declare -A VAR=(
+                            [url]="https://packages.lazarus-ide.org/${REPLY}.zip"
+                            [out]=$(mktemp)
+                        )
+                        wget --output-document "${VAR[out]}" "${VAR[url]}" >/dev/null
+                        unzip -o "${VAR[out]}" -d "use/${REPLY}"
+                        rm --verbose "${VAR[out]}"
+                    fi
+            done < 'use/components.txt'
+        fi
         find 'use' -type 'f' -name '*.lpk' -exec lazbuild --add-package-link {} +
     fi
-    find 'src' -type 'f' -name '*.lpi' \
+    find 'source' -type 'f' -name '*.lpi' \
         -exec lazbuild --no-write-project --recursive --no-write-project --build-mode=release {} + 1>&2
 )
 

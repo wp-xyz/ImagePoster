@@ -47,13 +47,13 @@ Function Build-Project {
         $env:PATH+=";$($VAR.Path)"
         Get-Command $VAR.Cmd
     }
-    If ( Test-Path -Path 'use\components.txt' ) {
+    If ( Test-Path -Path 'use' ) {
         & git submodule update --recursive --init | Out-Host
         & git submodule update --recursive --remote | Out-Host
         Get-Content -Path 'use\components.txt' | ForEach-Object {
             If ((-not (& lazbuild --verbose-pkgsearch $_ | Out-Host)) -and
                 (-not (& lazbuild --add-package $_ | Out-Host)) -and
-                (-not (Test-Path -Path 'use\components.txt'))) {
+                (-not (Test-Path -Path "use\$($_)"))) {
                     $OutFile = Request-File "https://packages.lazarus-ide.org/$($_).zip"
                     Expand-Archive -Path $OutFile -DestinationPath "use\$($_)" -Force
                     Remove-Item $OutFile
@@ -63,7 +63,7 @@ Function Build-Project {
             & lazbuild --add-package-link $_ | Out-Host
         }
     }
-    Get-ChildItem -Filter '*.lpi' -Recurse -File –Path 'src' | ForEach-Object {
+    Get-ChildItem -Filter '*.lpi' -Recurse -File –Path 'source' | ForEach-Object {
         & lazbuild --no-write-project --recursive --build-mode=release $_ | Out-Host
     }
 }
